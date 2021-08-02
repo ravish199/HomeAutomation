@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Spinner
+        android:id="@+id/spinner"
+        style="@style/ActionBarTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/deviceNameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorNevyBlue"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinner"/>
+
+
+    <TextView
+        android:id="@+id/startLable"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Start Time"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/startTimeBtn"
+        app:layout_constraintTop_toTopOf="@id/startTimeBtn"
+        app:layout_constraintBottom_toBottomOf="@id/startTimeBtn"/>
+
+    <Button
+        android:id="@+id/startTimeBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/startLable"
+        android:layout_marginTop="10dp"
+        android:text="Time"
+        app:layout_constraintEnd_toStartOf="@id/startStatusSwitch"
+        app:layout_constraintTop_toBottomOf="@id/deviceNameText"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/startStatusSwitch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintStart_toEndOf="@id/startTimeBtn"
+        app:layout_constraintTop_toTopOf="@id/startTimeBtn"
+        app:layout_constraintBottom_toBottomOf="@id/startTimeBtn"/>
+
+    <TextView
+        android:id="@+id/endLable"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="End Time"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/endTimeBtn"
+        app:layout_constraintTop_toTopOf="@id/endTimeBtn"
+        app:layout_constraintBottom_toBottomOf="@id/endTimeBtn"/>
+
+    <Button
+        android:id="@+id/endTimeBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/startLable"
+        android:layout_marginTop="10dp"
+        android:text="Time"
+        app:layout_constraintEnd_toStartOf="@id/startStatusSwitch"
+        app:layout_constraintTop_toBottomOf="@id/startTimeBtn"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/endStatusSwitch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintStart_toEndOf="@id/endTimeBtn"
+        app:layout_constraintTop_toTopOf="@id/endTimeBtn"
+        app:layout_constraintBottom_toBottomOf="@id/endTimeBtn"/>
+
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Save"
+        app:layout_constraintEnd_toStartOf="@id/editBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/endTimeBtn"/>
+
+
+    <Button
+        android:id="@+id/editBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/saveBtn"
+        android:layout_marginTop="50dp"
+        android:text="Edit"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/deleteBtn"
+        app:layout_constraintTop_toBottomOf="@id/endTimeBtn"/>
+
+
+    <Button
+        android:id="@+id/deleteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/editBtn"
+        android:layout_marginTop="50dp"
+        android:text="Delete"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/endTimeBtn"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

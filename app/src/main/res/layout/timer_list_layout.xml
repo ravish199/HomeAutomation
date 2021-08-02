@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:touchscreenBlocksFocus="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/deviceImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="10dp"
+        app:layout_constraintTop_toTopOf="@id/startTimeText"
+        app:layout_constraintBottom_toBottomOf="@id/startTimeText"
+        android:src="@drawable/ic_one_enable"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/startTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12:25"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorNevyBlue"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toEndOf="@id/deviceImage"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/startTimeSwitch"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintTop_toTopOf="@id/startTimeText"
+        android:src="@drawable/indicator_selector"
+        app:layout_constraintBottom_toBottomOf="@id/startTimeText"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/startTimeText" />
+
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+        android:src="@drawable/arrow"
+        android:scaleX="5"
+        app:layout_constraintTop_toTopOf="@id/startTimeText"
+        app:layout_constraintEnd_toStartOf="@id/endTimeText"
+        app:layout_constraintStart_toEndOf="@id/startTimeSwitch"
+        app:layout_constraintBottom_toBottomOf="@id/startTimeText"/>
+
+
+    <TextView
+        android:id="@+id/endTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12:25"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorNevyBlue"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/endTimeSwitch"/>
+
+    <ImageView
+        android:id="@+id/endTimeSwitch"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="10dp"
+        app:layout_goneMarginStart="10dp"
+        android:src="@drawable/indicator_selector"
+        app:layout_constraintTop_toTopOf="@id/endTimeText"
+        app:layout_constraintBottom_toBottomOf="@id/endTimeText"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

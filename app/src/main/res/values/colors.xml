@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ff9f00</color>
+    <color name="colorPrimaryDark">#cc7c00</color>
+    <color name="colorAccent">#bb0066</color>
+    <color name="textColor">#090909</color>
+    <color name="connectColor">@color/colorPrimaryDark</color>
+    <color name="disconnectedColor">#999999</color>
+    <color name="colorBlue">#000099</color>
+    <color name="colorNevyBlue">#000055</color>
+    <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
+</resources>

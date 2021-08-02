@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+   <include layout="@layout/toolbar_layout"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/container"
+        android:padding="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+
+        <ImageButton
+            android:id="@+id/bulb1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintEnd_toStartOf="@id/bulb2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:textSize="80sp"
+            android:src="@drawable/switch_on_of_selector1"
+            android:background="@drawable/circle_ripple"/>
+
+        <ImageButton
+            android:id="@+id/bulb2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toEndOf="@id/bulb1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="10dp"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:src="@drawable/switch_on_of_selector2"
+            android:background="@drawable/circle_ripple"/>
+
+        <ImageButton
+            android:id="@+id/bulb3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintEnd_toStartOf="@id/bulb4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bulb1"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/switch_on_of_selector3"
+            android:background="@drawable/circle_ripple"/>
+
+        <ImageButton
+            android:id="@+id/bulb4"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toEndOf="@id/bulb3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bulb2"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:textSize="80sp"
+            android:src="@drawable/switch_on_of_selector4"
+            android:background="@drawable/circle_ripple"/>
+
+        <Button
+            android:id="@+id/shutter"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="#00000000"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/timerRView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/bulb4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/setTimeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_input_add"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:progressTint="@color/colorBlue"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

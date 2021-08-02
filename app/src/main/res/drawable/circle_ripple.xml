@@ -1,0 +1,5 @@
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/colorAccent">
+    <item android:drawable="@drawable/circle_active"
+        android:gravity="center"/>
+</ripple>
