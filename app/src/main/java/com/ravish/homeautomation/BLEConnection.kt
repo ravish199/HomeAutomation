@@ -13,9 +13,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.ravish.homeautomation.Utility.Companion.ACTION_CONNECTED_BTN_UPDATE
+import com.ravish.homeautomation.Utility.Companion.ACTION_DEVICE_NOT_CONNECTED
 import com.ravish.homeautomation.Utility.Companion.ACTION_MESSAGE
 import com.ravish.homeautomation.Utility.Companion.ACTION_MESSAGE_READ
 import com.ravish.homeautomation.Utility.Companion.ACTION_MESSAGE_WRITE
+import com.ravish.homeautomation.Utility.Companion.ACTION_SOCKET_DISCONNECTED
 import com.ravish.homeautomation.Utility.Companion.SYNCH
 import com.ravish.homeautomation.Utility.Companion.updateUI
 import kotlinx.coroutines.CoroutineScope
@@ -101,17 +103,24 @@ class BLEConnection(val context: Context) {
 
         } else {
             Log.d(TAG, "Socket Closed")
+            updateUI(false, context, ACTION_DEVICE_NOT_CONNECTED)
         }
     }
 
      fun writeDataToDevice(bytes: ByteArray) {
+
         try {
-            activeSocket?.let {
-                if (it.isConnected) {
-                    mmOutStream?.write(bytes)
-                } else {
-                    Log.e(TAG, "Socket Disconnected")
+            if(activeSocket != null) {
+                activeSocket?.let {
+                    if (it.isConnected) {
+                        mmOutStream?.write(bytes)
+                    } else {
+                        Log.e(TAG, "Socket Disconnected")
+                        updateUI(false, context, ACTION_SOCKET_DISCONNECTED)
+                    }
                 }
+            } else {
+                updateUI(false, context, ACTION_DEVICE_NOT_CONNECTED)
             }
         } catch (e: IOException) {
             Log.e(TAG, "Error occurred when sending data", e)

@@ -5,35 +5,80 @@
     android:padding="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Spinner
-        android:id="@+id/spinner"
-        style="@style/ActionBarTheme"
+    <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:weightSum="4"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <TextView
-        android:id="@+id/deviceNameText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorNevyBlue"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinner"/>
+        <RadioButton
+            android:id="@+id/device1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:layout_marginStart="10dp"
+            android:buttonTint="@color/green"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/switch_background"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_weight="1"/>
+        <RadioButton
+            android:id="@+id/device2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:textSize="20sp"
+            android:buttonTint="@color/green"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/switch_background"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_weight="1"/>
+        <RadioButton
+            android:id="@+id/device3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:buttonTint="@color/green"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/switch_background"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_weight="1"/>
+        <RadioButton
+            android:id="@+id/device4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="4"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:buttonTint="@color/green"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/switch_background"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_weight="1"/>
 
+    </RadioGroup>
 
     <TextView
         android:id="@+id/startLable"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Start Time"
         android:layout_marginStart="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/startTimeBtn"
@@ -48,7 +93,7 @@
         android:layout_marginTop="10dp"
         android:text="Time"
         app:layout_constraintEnd_toStartOf="@id/startStatusSwitch"
-        app:layout_constraintTop_toBottomOf="@id/deviceNameText"/>
+        app:layout_constraintTop_toBottomOf="@id/radioGroup"/>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/startStatusSwitch"
@@ -60,37 +105,6 @@
         app:layout_constraintTop_toTopOf="@id/startTimeBtn"
         app:layout_constraintBottom_toBottomOf="@id/startTimeBtn"/>
 
-    <TextView
-        android:id="@+id/endLable"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="End Time"
-        android:layout_marginStart="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/endTimeBtn"
-        app:layout_constraintTop_toTopOf="@id/endTimeBtn"
-        app:layout_constraintBottom_toBottomOf="@id/endTimeBtn"/>
-
-    <Button
-        android:id="@+id/endTimeBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/startLable"
-        android:layout_marginTop="10dp"
-        android:text="Time"
-        app:layout_constraintEnd_toStartOf="@id/startStatusSwitch"
-        app:layout_constraintTop_toBottomOf="@id/startTimeBtn"/>
-
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/endStatusSwitch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintStart_toEndOf="@id/endTimeBtn"
-        app:layout_constraintTop_toTopOf="@id/endTimeBtn"
-        app:layout_constraintBottom_toBottomOf="@id/endTimeBtn"/>
-
     <Button
         android:id="@+id/saveBtn"
         android:layout_width="wrap_content"
@@ -99,7 +113,7 @@
         android:text="Save"
         app:layout_constraintEnd_toStartOf="@id/editBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/endTimeBtn"/>
+        app:layout_constraintTop_toBottomOf="@id/startStatusSwitch"/>
 
 
     <Button
@@ -111,7 +125,7 @@
         android:text="Edit"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@id/deleteBtn"
-        app:layout_constraintTop_toBottomOf="@id/endTimeBtn"/>
+        app:layout_constraintTop_toBottomOf="@id/startStatusSwitch"/>
 
 
     <Button
@@ -123,6 +137,6 @@
         android:text="Delete"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/endTimeBtn"/>
+        app:layout_constraintTop_toBottomOf="@id/startStatusSwitch"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

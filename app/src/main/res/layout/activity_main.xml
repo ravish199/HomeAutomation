@@ -6,16 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-   <include layout="@layout/toolbar_layout"/>
+   <include android:id="@+id/appBar"
+       layout="@layout/toolbar_layout"/>
+
+    <TextView
+        android:id="@+id/connectionStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/not_connected"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:drawableTint="@color/colorAccent"
+        android:drawableLeft="@drawable/unplug"
+        android:textColor="@color/red"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/connectionProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/connecting"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progressDrawable="@drawable/progress_drawable"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/container"
         android:padding="10dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+        app:layout_constraintTop_toBottomOf="@id/connectionProgress">
 
         <ImageButton
             android:id="@+id/bulb1"
@@ -28,7 +56,7 @@
             android:padding="10dp"
             android:scaleType="fitCenter"
             android:textSize="80sp"
-            android:src="@drawable/switch_on_of_selector1"
+            android:src="@drawable/wifi_drawable"
             android:background="@drawable/circle_ripple"/>
 
         <ImageButton
@@ -41,7 +69,7 @@
             android:layout_margin="10dp"
             android:scaleType="fitCenter"
             android:padding="10dp"
-            android:src="@drawable/switch_on_of_selector2"
+            android:src="@drawable/extension_drawable"
             android:background="@drawable/circle_ripple"/>
 
         <ImageButton
@@ -54,7 +82,7 @@
             android:layout_margin="10dp"
             android:padding="10dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/switch_on_of_selector3"
+            android:src="@drawable/speaker_drawable"
             android:background="@drawable/circle_ripple"/>
 
         <ImageButton
@@ -68,7 +96,7 @@
             android:padding="10dp"
             android:scaleType="fitCenter"
             android:textSize="80sp"
-            android:src="@drawable/switch_on_of_selector4"
+            android:src="@drawable/bulb_drawable"
             android:background="@drawable/circle_ripple"/>
 
         <Button
@@ -111,6 +139,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:progressTint="@color/colorBlue"
+        android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 

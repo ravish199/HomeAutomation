@@ -1,5 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable-v24/bulb_drawable.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable-v24/bulb_enabled.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable-v24/connection_drawable.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/alarmlist_drawable.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ble_icon.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/bulb_disabled.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/bulb_drawable.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/bulb_enabled.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/button_drawable.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/circle.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/circle_accent.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/circle_active.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/circle_grey.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/circle_light_on.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/circle_on.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/circle_ripple.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/connection_disable.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/connection_enabled.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/extension_disabled.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/extension_drawable.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/extension_enabled.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic__52138_speaker_icon.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic__extension_plug_icon.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_baseline_bluetooth_connected_24.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_baseline_bluetooth_disabled_24.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_bulb_icon.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_four_disable.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_four_enable.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_launcher_background.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_one_disable.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_peaker_icon.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_sync_icon.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_sync_icon_disabled.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_three_disable.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_three_enable.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_two_disable.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_two_enable.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/ic_wifi_icon.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/indicator_selector.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/list_background_active.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/list_background_inactive.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/progress_drawable.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/speaker_disabled.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/speaker_drawable.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/speaker_enabled.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/switch_background.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/switch_on_of_selector1.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/switch_on_of_selector2.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/switch_on_of_selector3.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/switch_on_of_selector4.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/switch_ripple.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/switch_thumb.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/switch_thumb_active.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/switch_thumb_inactive.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/switch_track.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/switch_track_inactive.xml" value="0.17222222222222222" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/wifi_disabled.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/wifi_drawable.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/drawable/wifi_enabled.xml" value="0.19166666666666668" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/layout/activity_add_timer.xml" value="0.22" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/layout/timer_list_layout.xml" value="0.22" />
+        <entry key="..\:/HomeAutomation/app/src/main/res/layout/toolbar_layout.xml" value="0.4466666666666667" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

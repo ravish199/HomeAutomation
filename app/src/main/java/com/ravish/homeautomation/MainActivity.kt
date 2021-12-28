@@ -16,15 +16,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ravish.homeautomation.Utility.Companion.ACTION_BT_BUTTON_UPDATE
 import com.ravish.homeautomation.Utility.Companion.ACTION_CONNECTED_BTN_UPDATE
+import com.ravish.homeautomation.Utility.Companion.ACTION_DEVICE_CONNECTED
+import com.ravish.homeautomation.Utility.Companion.ACTION_DEVICE_NOT_CONNECTED
 import com.ravish.homeautomation.Utility.Companion.ACTION_MESSAGE_READ
+import com.ravish.homeautomation.Utility.Companion.ACTION_SOCKET_DISCONNECTED
 import com.ravish.homeautomation.Utility.Companion.DATA
 import com.ravish.homeautomation.Utility.Companion.MSG_SWITCH_ON_OFF
 import com.ravish.homeautomation.Utility.Companion.SYNCH
 import com.ravish.homeautomation.Utility.Companion.TIMER_PREF
+import com.ravish.homeautomation.Utility.Companion.getPreference
+import com.ravish.homeautomation.Utility.Companion.savePreferences
 import com.ravish.homeautomation.Utility.Companion.sharedPreferences
 import com.ravish.homeautomation.Utility.Companion.updateUI
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 
@@ -37,6 +44,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var timerListRViewAdapter: TimerListRViewAdapter
     private lateinit var timerDataList: MutableList<TimerData>
 
+    var timer: Timer? = null
+    private var isDeviceConnected = false
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +58,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         bulb2.setOnClickListener(this)
         bulb3.setOnClickListener(this)
         bulb4.setOnClickListener(this)
+
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         val intentFilter = IntentFilter()
         intentFilter.addAction(ACTION_BT_BUTTON_UPDATE)
         intentFilter.addAction(ACTION_CONNECTED_BTN_UPDATE)
         intentFilter.addAction(ACTION_MESSAGE_READ)
+        intentFilter.addAction(ACTION_SOCKET_DISCONNECTED)
+        intentFilter.addAction(ACTION_DEVICE_NOT_CONNECTED)
+        intentFilter.addAction(ACTION_DEVICE_CONNECTED)
         registerReceiver(
             uIUpdateReceiver, intentFilter
         )
@@ -77,9 +91,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 startForegroundService(intent)
             }
         } else {
-             updateUI(true, this, ACTION_CONNECTED_BTN_UPDATE)
-            synchDevices()
+           updateUI(true, this, ACTION_CONNECTED_BTN_UPDATE)
+            //synchDevices()
         }
+
     }
 
 
@@ -129,6 +144,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     updateDevicesUi(intent.getStringExtra(DATA)?.toInt()!!)
                     Log.d(TAG, "ACTION_MESSAGE_READ")
                 }
+                ACTION_SOCKET_DISCONNECTED -> {
+                    activateBtn(false)
+                    stopService(Intent(context, BLEService::class.java))
+                    onRestart()
+                    Log.d(TAG, "ACTION_SOCKET_DISCONNECTED")
+                }
+                ACTION_DEVICE_NOT_CONNECTED -> {
+                  //  updateDeviceConnectionStatus(Utility.Companion.DeviceConnectinStatus.DISCONNECTED)
+                    Log.d(TAG, "ACTION_DEVICE_NOT_CONNECTED")
+                }
+                ACTION_DEVICE_CONNECTED -> {
+                   // updateDeviceConnectionStatus(Utility.Companion.DeviceConnectinStatus.CONNECTED)
+                    Log.d(TAG, "ACTION_DEVICE_CONNECTED")
+                }
             }
         }
     }
@@ -136,6 +165,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         enableBlueTooth()
+
     }
 
     @SuppressLint("MissingPermission")
@@ -144,6 +174,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             if (!it.isEnabled) {
                 val bluetoothIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
                 startActivityForResult(bluetoothIntent, enableBtRequest)
+            } else {
+               synchDevices()
             }
         }
     }
@@ -171,6 +203,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun activateBtn(isActivate: Boolean) {
+        savePreferences(ACTION_DEVICE_CONNECTED, true.toString())
+        isDeviceConnected = isActivate
         if (isActivate) {
             progressBar.visibility = View.GONE
             shutter.visibility = View.GONE
@@ -183,6 +217,49 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         bleIcon.isEnabled = isActivate
         connectionIcon.isEnabled = isActivate
         updateAppBar(isActivate)
+    }
+
+    private fun updateDeviceConnectionStatus(deviceConnectinStatus: Utility.Companion.DeviceConnectinStatus) {
+        when(deviceConnectinStatus) {
+            Utility.Companion.DeviceConnectinStatus.CONNECTING -> {
+                connectionStatus.visibility = View.GONE
+                startConnectionProgress()
+            }
+            Utility.Companion.DeviceConnectinStatus.DISCONNECTED -> {
+                connectionStatus.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
+                stopConnectionProgress()
+            }
+            else -> {
+                connectionStatus.visibility = View.GONE
+                progressBar.visibility = View.GONE
+                stopConnectionProgress()
+            }
+        }
+    }
+
+    private fun startConnectionProgress() {
+        timer = Timer()
+        var c = 1
+        connectionProgress.visibility = View.VISIBLE
+        timer?.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                runOnUiThread {
+                    connectionProgress.progress = connectionProgress.progress + c
+                    if (connectionProgress.progress == 100) {
+                        c = -1
+                    } else if (connectionProgress.progress == 0) {
+                        c = 1
+                    }
+                }
+            }
+        }, 100, 100)
+    }
+
+    private fun stopConnectionProgress() {
+        timer?.cancel()
+        timer = null
+        connectionProgress.visibility = View.GONE
     }
 
     override fun onClick(v: View?) {
@@ -200,11 +277,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun synchDevices() {
-        Intent().putExtra(DATA, SYNCH.toString()).also {
-            it.action = MSG_SWITCH_ON_OFF
-            sendBroadcast(it)
+        if(getPreference(ACTION_DEVICE_CONNECTED).toBoolean()) {
+           // updateDeviceConnectionStatus(Utility.Companion.DeviceConnectinStatus.CONNECTING)
+            Intent().putExtra(DATA, SYNCH.toString()).also {
+                it.action = MSG_SWITCH_ON_OFF
+                sendBroadcast(it)
+            }
         }
     }
+
     private fun sendSignal(deviceId: Int) {
         Intent().putExtra(DATA, deviceId.toString()).also {
             it.action = MSG_SWITCH_ON_OFF

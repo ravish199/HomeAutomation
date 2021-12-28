@@ -19,7 +19,12 @@ import com.ravish.homeautomation.Utility.Companion.MSG_SWITCH_ON_OFF
 import com.ravish.homeautomation.Utility.Companion.createNotificationChannel
 import com.ravish.homeautomation.Utility.Companion.fetchTimeData
 import com.ravish.homeautomation.Utility.Companion.updateUI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.OutputStream
+import java.lang.Exception
 import java.util.*
 
 class BLEService : Service() {
@@ -47,7 +52,7 @@ class BLEService : Service() {
     private var counter = 0
     private var maxCounter = 1
     private var timer: Timer? = null
-    private val timerDelay = 60 * 1000L
+    private val timerDelay = 10 * 1000L
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -83,7 +88,7 @@ class BLEService : Service() {
             .setTicker(getText(R.string.ticker_text))
             .build()
 
-        startForeground(1, notification)
+        startForeground(199, notification)
 
         Log.d(TAG, "onStartCommand")
         timer = Timer()
@@ -91,12 +96,15 @@ class BLEService : Service() {
             override fun run() {
                 val timerList = fetchTimeData()
                 timerList.forEach {
-                    val deviceId = getTimerDeviceId(it)
-                    if(deviceId != 0) {
-                        bleConnection.writeDataToDevice(deviceId.toString().toByteArray()!!)
-                        Log.d(TAG, "Timer Signal sent")
-                    } else {
-                        Log.d(TAG, "Time Not matching")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val deviceId = getTimerDeviceId(it)
+                        if (deviceId != 0) {
+                            bleConnection.writeDataToDevice(deviceId.toString().toByteArray()!!)
+                            Log.d(TAG, "Timer Signal sent")
+                        } else {
+                            Log.d(TAG, "Time Not matching")
+                        }
+                        delay(1000)
                     }
                 }
                 Log.d(TAG, "Counter In")
@@ -116,11 +124,6 @@ class BLEService : Service() {
             deviceId = timerData.deviceName.split("_")[1].toInt()
             if(!timerData.startStatus) deviceId = -deviceId
         } else {
-            check = checkTimeMatch(timerData.endTime.split(":"))
-            if(check) {
-                deviceId = timerData.deviceName.split("_")[1].toInt()
-                if(!timerData.endStatus) deviceId = -deviceId
-            }
         }
         return deviceId
     }
@@ -172,7 +175,11 @@ class BLEService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(bleStateReciever)
+        try {
+            unregisterReceiver(bleStateReciever)
+            unregisterReceiver(incomingReciever)
+        }catch (e: Exception) {
+        }
         timer?.cancel()
         timer = null
     }

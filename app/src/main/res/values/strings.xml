@@ -1,7 +1,6 @@
 <resources>
-    <string name="app_name">HomeAutomation</string>
+    <string name="app_name">Home Automation</string>
     <string name="title_activity_main2">MainActivity</string>
-    <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
@@ -15,10 +14,12 @@
     <string name="ticker_text">Automation</string>
     <string name="set_timer">Set Timer</string>
     <string name="title_activity_add_timer">AddTimerActivity</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
+
+    <string name="connecting">Connecting…</string>
+    <string name="not_connected">Device not connected</string>
+    <string name="device1">Device1</string>
+    <string name="device2">Device2</string>
+    <string name="device3">Device3</string>
+    <string name="device4">Device4</string>
 
 </resources>

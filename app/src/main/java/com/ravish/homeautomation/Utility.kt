@@ -22,6 +22,9 @@ class Utility {
         const val BLE_CONNECTED = "BLE_CONNECTED"
         const val UI_UPDATE = "UI_UPDATE"
         const val ACTION_MESSAGE_READ = "MESSAGE_READ"
+      const val ACTION_SOCKET_DISCONNECTED = "SOCKET_DISCONNECTED"
+      const val ACTION_DEVICE_NOT_CONNECTED = "DEVICE_NOT_CONNECTED"
+      const val ACTION_DEVICE_CONNECTED = "DEVICE_CONNECTED"
         const val ACTION_MESSAGE_WRITE = "MESSAGE_WRITE"
         const val SYNCH = 99
       const val ACTION_MESSAGE = "ACTION_MESSAGE"
@@ -50,9 +53,7 @@ class Utility {
 
       fun initReadPrefKey(deviceId: String) {
         START_TIME_KEY = START_TIME + deviceId
-        END_TIME_KEY = END_TIME + deviceId
         START_STATUS_KEY = START_STATUS + deviceId
-        END_STATUS_KEY = END_STATUS + deviceId
         ENABLE_KEY = DEVICE_ENABLE + deviceId
       }
 
@@ -61,6 +62,20 @@ class Utility {
           it.putString(key, value)
           it.apply()
         }
+      }
+
+      fun saveData(startTime: TimerTime, startStatus: Boolean, enable: Boolean) {
+        savePreferences(START_TIME_KEY, "${startTime.hour} : ${startTime.minute}")
+        savePreferences(START_STATUS_KEY, startStatus.toString())
+        savePreferences(ENABLE_KEY, enable.toString())
+      }
+
+      fun updateEnableStatus(enable: Boolean) {
+        savePreferences(ENABLE_KEY, enable.toString())
+      }
+
+      enum class DeviceConnectinStatus {
+        CONNECTING, CONNECTED, DISCONNECTED
       }
 
       fun getPreference(key: String): String {
@@ -82,9 +97,7 @@ class Utility {
             val timerData = TimerData(
               devices[i],
               getPreference(START_TIME_KEY),
-              getPreference(END_TIME_KEY),
               getPreference(START_STATUS_KEY).toBoolean(),
-              getPreference(END_STATUS_KEY).toBoolean(),
               getPreference(ENABLE_KEY).toBoolean()
             )
             list.add(timerData)
