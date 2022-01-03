@@ -1,4 +1,4 @@
-package com.ravish.homeautomation
+package com.ravish.homeautomation.views
 
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
@@ -7,20 +7,15 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
-import com.ravish.homeautomation.Utility.Companion.ENABLE_KEY
-import com.ravish.homeautomation.Utility.Companion.END_STATUS
-import com.ravish.homeautomation.Utility.Companion.END_STATUS_KEY
-import com.ravish.homeautomation.Utility.Companion.END_TIME
-import com.ravish.homeautomation.Utility.Companion.END_TIME_KEY
-import com.ravish.homeautomation.Utility.Companion.START_STATUS
-import com.ravish.homeautomation.Utility.Companion.START_STATUS_KEY
-import com.ravish.homeautomation.Utility.Companion.START_TIME
-import com.ravish.homeautomation.Utility.Companion.START_TIME_KEY
-import com.ravish.homeautomation.Utility.Companion.deletePreference
-import com.ravish.homeautomation.Utility.Companion.getPreference
-import com.ravish.homeautomation.Utility.Companion.initReadPrefKey
-import com.ravish.homeautomation.Utility.Companion.savePreferences
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
+import com.ravish.homeautomation.R
+import com.ravish.homeautomation.model.TimerTime
+import com.ravish.homeautomation.Utility
+import com.ravish.homeautomation.model.AlarmDetails
+import com.ravish.homeautomation.viewmodel.AlarmViewModel
 import kotlinx.android.synthetic.main.activity_add_timer.*
+import kotlinx.android.synthetic.main.toolbar_layout2.*
 import java.util.*
 
 class AddTimerActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener {
@@ -29,7 +24,7 @@ class AddTimerActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeList
     private val calendar = Calendar.getInstance()
     private val hour = calendar.get(Calendar.HOUR_OF_DAY)
     private val minute = calendar.get(Calendar.MINUTE)
-    var startTime = TimerTime(0, 0)
+    var startTime:Date? = null
     var endTime = TimerTime(0, 0)
     var startStatus = false
     var endStatus = false
@@ -43,11 +38,13 @@ class AddTimerActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeList
         START, END
     }
 
+    lateinit var alarmViewModel: AlarmViewModel
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_timer)
+        alarmViewModel = ViewModelProvider(this).get(AlarmViewModel::class.java)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Set Timer"
 
@@ -59,14 +56,32 @@ class AddTimerActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeList
         Utility.devices.forEach {
             deviceList.add(it)
         }
+        backBtn.setOnClickListener {
+            onBackPressed()
+        }
 
         startTimeBtn.setOnClickListener {
             selectTime(TimeSelection.START)
         }
 
         saveBtn.setOnClickListener {
-            Utility.saveData(startTime, startStatus, enable)
-            enableInputUi(false)
+            if(deviceName.isNotEmpty() && startTime != null) {
+                alarmViewModel.insertData(
+                    AlarmDetails(
+                        0,
+                        deviceName,
+                        startTime!!,
+                        startStatus,
+                        enable
+                    )
+                )
+                onBackPressed()
+            } else {
+                Snackbar.make(container, "Please select a Device and Time", Snackbar.LENGTH_SHORT)
+                    .setTextColor(getColor(R.color.white))
+                    .show()
+            }
+          //  enableInputUi(false)
         }
 
         editBtn.setOnClickListener {
@@ -74,8 +89,6 @@ class AddTimerActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeList
         }
 
         deleteBtn.setOnClickListener {
-            deletePreference(START_TIME + deviceName)
-            deletePreference(START_STATUS + deviceName)
             onBackPressed()
         }
 
@@ -83,7 +96,6 @@ class AddTimerActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeList
             startStatus = isChecked
         }
         try {
-            loadData()
         } catch (e: Exception) {
         }
 
@@ -92,32 +104,23 @@ class AddTimerActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeList
     private fun enableInputUi(isEnable: Boolean) {
         startTimeBtn.isEnabled = isEnable
         startStatusSwitch.isEnabled = isEnable
-        saveBtn.visibility = if(isEnable) View.VISIBLE else View.GONE
-        editBtn.visibility =  if(isEnable) View.GONE else View.VISIBLE
-        deleteBtn.visibility = if(isEnable) View.GONE else View.VISIBLE
+        saveBtn.visibility = if (isEnable) View.VISIBLE else View.GONE
+        editBtn.visibility = if (isEnable) View.GONE else View.VISIBLE
+        deleteBtn.visibility = if (isEnable) View.GONE else View.VISIBLE
     }
 
 
-    private fun loadData() {
-        getPreference(START_TIME_KEY).split(":").also {
-            startTime = TimerTime(it[0].toInt(), it[1].toInt())
-            startTimeBtn.text = startTime.toString()
-        }
 
-        getPreference(START_STATUS_KEY).also {
-            startStatus = it.toBoolean()
-            startStatusSwitch.isChecked = startStatus
-        }
-    }
 
     @SuppressLint("SetTextI18n")
     private fun selectTime(timeselection: TimeSelection) {
         TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
-            val t = TimerTime(hourOfDay, minute)
+          startTime = Date()
             when (timeselection) {
                 TimeSelection.START -> {
-                    startTime = t
-                    startTimeBtn.text = "${startTime.hour} : ${startTime.minute}"
+                    startTime?.hours = hourOfDay
+                    startTime?.minutes = minute
+                    startLable.text = "${startTime?.hours} : ${startTime?.minutes}"
                 }
             }
         }, hour, minute, true).also {
@@ -134,17 +137,16 @@ class AddTimerActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeList
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-        if(isChecked) {
-            var position = 0
-            when (buttonView?.id!!) {
-                R.id.device1 -> position = 0
-                R.id.device2 -> position = 1
-                R.id.device3 -> position = 2
-                R.id.device4 -> position = 3
+        if (isChecked) {
+            deviceName = when (buttonView?.id!!) {
+                R.id.device1 -> Utility.Companion.Devices.DEVICE1.name
+                R.id.device2 -> Utility.Companion.Devices.DEVICE2.name
+                R.id.device3 -> Utility.Companion.Devices.DEVICE3.name
+                R.id.device4 -> Utility.Companion.Devices.DEVICE4.name
+                else -> {
+                  Utility.Companion.Devices.DEVICE4.toString()
+                }
             }
-            deviceName = Utility.devices[position]
-            initReadPrefKey(deviceName)
-            selectedDevicePosition = position
         }
     }
 }

@@ -1,33 +1,23 @@
-package com.ravish.homeautomation
+package com.ravish.homeautomation.services
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
-import android.util.ArraySet
 import android.util.Log
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.ravish.homeautomation.Utility.Companion.ACTION_CONNECTED_BTN_UPDATE
 import com.ravish.homeautomation.Utility.Companion.ACTION_DEVICE_NOT_CONNECTED
 import com.ravish.homeautomation.Utility.Companion.ACTION_MESSAGE
 import com.ravish.homeautomation.Utility.Companion.ACTION_MESSAGE_READ
-import com.ravish.homeautomation.Utility.Companion.ACTION_MESSAGE_WRITE
 import com.ravish.homeautomation.Utility.Companion.ACTION_SOCKET_DISCONNECTED
 import com.ravish.homeautomation.Utility.Companion.SYNCH
 import com.ravish.homeautomation.Utility.Companion.updateUI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -108,7 +98,6 @@ class BLEConnection(val context: Context) {
     }
 
      fun writeDataToDevice(bytes: ByteArray) {
-
         try {
             if(activeSocket != null) {
                 activeSocket?.let {

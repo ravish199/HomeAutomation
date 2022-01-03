@@ -15,16 +15,10 @@
     android:background="@drawable/alarmlist_drawable"
     android:padding="5dp">
 
-    <TextView
+    <ImageView
         android:id="@+id/deviceImage"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:textColor="@color/white"
-        android:background="@drawable/circle"
-        android:textSize="12sp"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:backgroundTint="@color/colorAccent"
         app:layout_constraintTop_toTopOf="@id/startTimeText"
         app:layout_constraintBottom_toBottomOf="@id/startTimeText"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -33,18 +27,17 @@
         android:id="@+id/startTimeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="12:25"
+        android:text="12:15"
         android:textSize="15sp"
-        android:textStyle="bold"
         android:textColor="@color/colorNevyBlue"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toStartOf="@id/startTimeSwitch"
+        app:layout_constraintEnd_toStartOf="@id/statusImageView"
         app:layout_constraintStart_toEndOf="@id/deviceImage"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
-        android:id="@+id/startTimeSwitch"
+        android:id="@+id/statusImageView"
         android:layout_width="20dp"
         android:layout_height="20dp"
         app:layout_constraintTop_toTopOf="@id/startTimeText"
@@ -59,9 +52,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:text="Enable"
        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/startTimeSwitch"/>
+        app:layout_constraintBottom_toBottomOf="@id/statusImageView"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

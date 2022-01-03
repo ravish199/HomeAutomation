@@ -1,4 +1,4 @@
-package com.ravish.homeautomation
+package com.ravish.homeautomation.views
 
 import android.annotation.SuppressLint
 import android.app.ActivityManager
@@ -13,7 +13,11 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ravish.homeautomation.AlarmListActionListener
+import com.ravish.homeautomation.R
+import com.ravish.homeautomation.Utility
 import com.ravish.homeautomation.Utility.Companion.ACTION_BT_BUTTON_UPDATE
 import com.ravish.homeautomation.Utility.Companion.ACTION_CONNECTED_BTN_UPDATE
 import com.ravish.homeautomation.Utility.Companion.ACTION_DEVICE_CONNECTED
@@ -23,35 +27,36 @@ import com.ravish.homeautomation.Utility.Companion.ACTION_SOCKET_DISCONNECTED
 import com.ravish.homeautomation.Utility.Companion.DATA
 import com.ravish.homeautomation.Utility.Companion.MSG_SWITCH_ON_OFF
 import com.ravish.homeautomation.Utility.Companion.SYNCH
-import com.ravish.homeautomation.Utility.Companion.TIMER_PREF
-import com.ravish.homeautomation.Utility.Companion.getPreference
-import com.ravish.homeautomation.Utility.Companion.savePreferences
-import com.ravish.homeautomation.Utility.Companion.sharedPreferences
+import com.ravish.homeautomation.Utility.Companion.allAlarmList
 import com.ravish.homeautomation.Utility.Companion.updateUI
+import com.ravish.homeautomation.model.AlarmDetails
+import com.ravish.homeautomation.services.BLEService
+import com.ravish.homeautomation.viewmodel.AlarmViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.abs
 
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener, AlarmListActionListener {
 
     var bluetoothAdapter: BluetoothAdapter? = null
     private val enableBtRequest = 201
     private val TAG = "MainActivity"
     private val TIME_REQUEST_CODE = 111
     private lateinit var timerListRViewAdapter: TimerListRViewAdapter
-    private lateinit var timerDataList: MutableList<TimerData>
+    private lateinit var alarmDetailsList: MutableList<AlarmDetails>
 
     var timer: Timer? = null
     private var isDeviceConnected = false
+
+    lateinit var alarmViewModel: AlarmViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        sharedPreferences = getSharedPreferences(TIMER_PREF, Context.MODE_PRIVATE)
+        alarmViewModel = ViewModelProvider(this).get(AlarmViewModel::class.java)
         connectionIcon.isEnabled = false
         bleIcon.isEnabled = false
         bulb1.setOnClickListener(this)
@@ -80,11 +85,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             addTimer()
         }
 
-        timerDataList = ArrayList()
+        alarmDetailsList = ArrayList()
         timerRView.layoutManager = LinearLayoutManager(baseContext)
-        timerListRViewAdapter = TimerListRViewAdapter(timerDataList)
+        timerListRViewAdapter = TimerListRViewAdapter(alarmDetailsList, this)
         timerRView.adapter = timerListRViewAdapter
-        loadData()
+        alarmViewModel.getAllAlarmDetails()
 
         if (!isServiceRunning(BLEService::class.java)) {
             Intent(this, BLEService::class.java).also { intent ->
@@ -93,6 +98,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         } else {
            updateUI(true, this, ACTION_CONNECTED_BTN_UPDATE)
             //synchDevices()
+        }
+
+
+        alarmViewModel.allAlarmDetailsLiveData.observe(this) { it ->
+            allAlarmList = it.filter { it.enable }
+            alarmDetailsList.clear()
+            alarmDetailsList.addAll(it)
+            timerListRViewAdapter.notifyDataSetChanged()
         }
 
     }
@@ -113,11 +126,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         startActivityForResult(addTimeIntent, TIME_REQUEST_CODE)
     }
 
-    private fun loadData() {
-        timerDataList.clear()
-        timerDataList.addAll(Utility.fetchTimeData())
-        timerListRViewAdapter.notifyDataSetChanged()
-    }
 
 
     private fun updateDevicesUi(deviceId: Int) {
@@ -151,11 +159,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     Log.d(TAG, "ACTION_SOCKET_DISCONNECTED")
                 }
                 ACTION_DEVICE_NOT_CONNECTED -> {
-                  //  updateDeviceConnectionStatus(Utility.Companion.DeviceConnectinStatus.DISCONNECTED)
+                    updateDeviceConnectionStatus(Utility.Companion.DeviceConnectinStatus.DISCONNECTED)
                     Log.d(TAG, "ACTION_DEVICE_NOT_CONNECTED")
                 }
                 ACTION_DEVICE_CONNECTED -> {
-                   // updateDeviceConnectionStatus(Utility.Companion.DeviceConnectinStatus.CONNECTED)
+                   updateDeviceConnectionStatus(Utility.Companion.DeviceConnectinStatus.CONNECTED)
                     Log.d(TAG, "ACTION_DEVICE_CONNECTED")
                 }
             }
@@ -184,7 +192,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == TIME_REQUEST_CODE) {
             try {
-                loadData()
+                alarmViewModel.getAllAlarmDetails()
             } catch (e: Exception) {
             }
         }
@@ -203,7 +211,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun activateBtn(isActivate: Boolean) {
-        savePreferences(ACTION_DEVICE_CONNECTED, true.toString())
         isDeviceConnected = isActivate
         if (isActivate) {
             progressBar.visibility = View.GONE
@@ -277,13 +284,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun synchDevices() {
-        if(getPreference(ACTION_DEVICE_CONNECTED).toBoolean()) {
            // updateDeviceConnectionStatus(Utility.Companion.DeviceConnectinStatus.CONNECTING)
             Intent().putExtra(DATA, SYNCH.toString()).also {
                 it.action = MSG_SWITCH_ON_OFF
                 sendBroadcast(it)
             }
-        }
     }
 
     private fun sendSignal(deviceId: Int) {
@@ -291,5 +296,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             it.action = MSG_SWITCH_ON_OFF
             sendBroadcast(it)
         }
+    }
+
+    override fun onAlarmEnabled(id: Int, status: Boolean) {
+        alarmViewModel.updateEnableStatus(id, status)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onDeleteAlarm(id: Int) {
+        alarmViewModel.deleteAlarmById(id)
+        alarmViewModel.getAllAlarmDetails()
+        timerListRViewAdapter.notifyDataSetChanged()
     }
 }

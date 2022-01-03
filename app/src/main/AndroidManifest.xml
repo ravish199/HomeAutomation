@@ -10,14 +10,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/automation"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/automation"
+        android:roundIcon="@mipmap/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".views.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,14 +26,15 @@
         </activity>
 
         <activity
-            android:name=".AddTimerActivity"
-            android:theme="@style/ActionBarTheme">
+            android:name=".views.AddTimerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <service
-            android:name=".BLEService"
+            android:name=".services.BLEService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:foregroundServiceType="connectedDevice"/>
     </application>
 
 </manifest>
